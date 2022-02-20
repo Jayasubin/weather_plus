@@ -1,5 +1,9 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_plus/view/widget/main_drawer.dart';
+
+import '../cubit/internet/internet_cubit.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -9,9 +13,29 @@ class MainPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Weather Plus'),
-        actions: const [
-          Icon(Icons.wifi_off),
-          SizedBox(
+        actions: [
+          BlocConsumer<InternetCubit, InternetState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              if (state is InternetInitial) {
+                return const CircularProgressIndicator();
+              } else if (state is InternetUnavailable) {
+                return const Icon(Icons.error_outline);
+              } else if (state is InternetAvailable) {
+                if (state.result == ConnectivityResult.mobile) {
+                  return const Icon(Icons.signal_cellular_4_bar);
+                } else if (state.result == ConnectivityResult.wifi) {
+                  return const Icon(Icons.wifi);
+                } else {
+                  return const Icon(Icons.mobile_friendly);
+                }
+              }
+              return const SizedBox();
+            },
+          ),
+          const SizedBox(
             width: 15.0,
           )
         ],

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_plus/cubit/internet/internet_cubit.dart';
+import 'package:weather_plus/cubit/location/location_cubit.dart';
+import 'package:weather_plus/cubit/weather/weather_cubit.dart';
 import 'package:weather_plus/view/main_page.dart';
 
 void main() {
@@ -10,10 +14,17 @@ class WeatherPlus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Weather Plus',
-      home: MainPage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => InternetCubit()),
+        BlocProvider(create: (_) => LocationCubit()),
+        BlocProvider(create: (_) => WeatherCubit()),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Weather Plus',
+        home: MainPage(),
+      ),
     );
   }
 }
