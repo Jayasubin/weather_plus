@@ -5,10 +5,12 @@ abstract class WeatherState {}
 
 class WeatherInitial extends WeatherState {}
 
-class WeatherFetching extends WeatherState {
-  final String cityName;
+class WeatherFetching extends WeatherState {}
 
-  WeatherFetching(this.cityName);
+class WeatherError extends WeatherState {
+  final String errorText;
+
+  WeatherError(this.errorText);
 }
 
 class WeatherFetched extends WeatherState {

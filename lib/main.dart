@@ -16,7 +16,7 @@ class WeatherPlus extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => InternetCubit()),
+        BlocProvider(create: (_) => InternetCubit()..checkConnectivity()),
         BlocProvider(create: (_) => LocationCubit()),
         BlocProvider(create: (_) => WeatherCubit()),
       ],
