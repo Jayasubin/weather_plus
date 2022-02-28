@@ -25,6 +25,9 @@ class LocationCubit extends Cubit<LocationState> {
           emit(LocationFetched(_locationData));
         });
       } else {
+        if(_permissionStatus==PermissionStatus.deniedForever){
+          emit (LocationPermissionDeniedForever());
+        }
         emit(LocationPermissionDenied());
 
         await _location.requestPermission();

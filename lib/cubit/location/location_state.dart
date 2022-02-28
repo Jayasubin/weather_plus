@@ -9,6 +9,8 @@ class LocationDisabled extends LocationState {}
 
 class LocationPermissionDenied extends LocationState {}
 
+class LocationPermissionDeniedForever extends LocationState {}
+
 class LocationFetching extends LocationState {}
 
 class LocationError extends LocationState {
