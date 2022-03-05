@@ -13,16 +13,11 @@ class InternetCubit extends Cubit<InternetState> {
     final ConnectivityResult connectivity =
         await InternetService().getConnectivity();
 
-    Future.delayed(
-      const Duration(milliseconds: 800),
-      () {
-        if (connectivity == ConnectivityResult.none) {
-          emit(InternetUnavailable());
-        } else {
-          emit(InternetAvailable(connectivity));
-        }
-      },
-    );
+    if (connectivity == ConnectivityResult.none) {
+      emit(InternetUnavailable());
+    } else {
+      emit(InternetAvailable(connectivity));
+    }
 
     InternetService().connectivity.onConnectivityChanged.listen(
       (ConnectivityResult result) {

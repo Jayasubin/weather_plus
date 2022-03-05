@@ -17,8 +17,6 @@ class InternetIcon extends StatelessWidget {
             return const CircularProgressIndicator(
               color: Colors.white,
             );
-          } else if (state is InternetUnavailable) {
-            return const Icon(Icons.error_outline);
           } else if (state is InternetAvailable) {
             if (state.result == ConnectivityResult.mobile) {
               return const Icon(Icons.signal_cellular_4_bar);
@@ -28,7 +26,8 @@ class InternetIcon extends StatelessWidget {
               return const Icon(Icons.mobile_friendly);
             }
           } else {
-            return const Icon(Icons.warning);
+            return const Icon(
+                Icons.signal_cellular_connected_no_internet_0_bar);
           }
         },
         listener: (context, state) {

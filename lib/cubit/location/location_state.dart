@@ -13,11 +13,7 @@ class LocationPermissionDeniedForever extends LocationState {}
 
 class LocationFetching extends LocationState {}
 
-class LocationError extends LocationState {
-  final String errorText;
-
-  LocationError(this.errorText);
-}
+class LocationError extends LocationState {}
 
 class LocationFetched extends LocationState {
   final LocationData locationData;

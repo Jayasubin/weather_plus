@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_plus/cubit/weather/weather_cubit.dart';
+import 'package:weather_plus/model/data_model/weather_data.dart';
 import 'package:weather_plus/view/widget/gps_icon.dart';
 import 'package:weather_plus/view/widget/internet_icon.dart';
 import 'package:weather_plus/view/widget/main_drawer.dart';
@@ -12,16 +14,17 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFe1f5fe),
       appBar: AppBar(
         title: const Text('Weather Plus'),
         actions: const [
           InternetIcon(),
           SizedBox(
-            width: 8.0,
+            width: 16.0,
           ),
           GPSIcon(),
           SizedBox(
-            width: 15.0,
+            width: 20.0,
           ),
         ],
       ),
@@ -30,16 +33,20 @@ class MainPage extends StatelessWidget {
         child: BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
             if (state is WeatherFetched) {
+              final WeatherData data = state.weatherData;
+
               return Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Column(
                     children: [
+                      const SizedBox(height: 30.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            state.weatherData.cityName,
+                            data.cityName,
                             style: const TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w600,
@@ -48,7 +55,7 @@ class MainPage extends StatelessWidget {
                           Column(
                             children: [
                               Text(
-                                state.weatherData.date,
+                                data.date,
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
@@ -58,7 +65,7 @@ class MainPage extends StatelessWidget {
                                 height: 5.0,
                               ),
                               Text(
-                                state.weatherData.time,
+                                data.time,
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
@@ -68,23 +75,43 @@ class MainPage extends StatelessWidget {
                           )
                         ],
                       ),
+                      const SizedBox(height: 20.0),
                       const Divider(),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(
-                        state.weatherData.currentStatus,
-                        size: 80,
-                      ),
-                      Text(
-                        '${state.weatherData.currentTemp}\u00b0C ',
-                        style: const TextStyle(
-                          fontSize: 60,
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(height: 20.0),
+                      Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFb3e5fc),
+                          borderRadius: BorderRadius.circular(12.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0xFFbdbdbd),
+                              offset: Offset(3, 5),
+                              blurRadius: 3.0,
+                            )
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: data.currentStatus,
+                              placeholder: (context, url) =>
+                                  const Icon(Icons.rotate_left),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error_outline),
+                            ),
+                            Text(
+                              '${data.currentTemp}\u00b0C ',
+                              style: const TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
                   Column(
@@ -99,7 +126,7 @@ class MainPage extends StatelessWidget {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.cyan,
+                              color: Colors.lightBlueAccent,
                               borderRadius: BorderRadius.circular(6.0)),
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
@@ -114,18 +141,23 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Row(
-                                  children: const [
+                                  children: [
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0),
-                                      child: Icon(
-                                        Icons.water,
-                                        size: 30,
+                                      child: CachedNetworkImage(
+                                        imageUrl: data.tomorrowStatus,
+                                        height: 40.0,
+                                        width: 40.0,
+                                        placeholder: (context, url) =>
+                                            const Icon(Icons.rotate_left),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error_outline),
                                       ),
                                     ),
                                     Text(
-                                      '26.5/24.9',
-                                      style: TextStyle(
+                                      data.tomorrowTempRange,
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -146,7 +178,7 @@ class MainPage extends StatelessWidget {
                         ),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Colors.cyan,
+                              color: Colors.lightBlueAccent,
                               borderRadius: BorderRadius.circular(6.0)),
                           child: Padding(
                             padding: const EdgeInsets.all(15.0),
@@ -161,18 +193,23 @@ class MainPage extends StatelessWidget {
                                   ),
                                 ),
                                 Row(
-                                  children: const [
+                                  children: [
                                     Padding(
-                                      padding: EdgeInsets.symmetric(
+                                      padding: const EdgeInsets.symmetric(
                                           horizontal: 20.0),
-                                      child: Icon(
-                                        Icons.mode_night,
-                                        size: 30,
+                                      child: CachedNetworkImage(
+                                        imageUrl: data.dayAfterStatus,
+                                        height: 40.0,
+                                        width: 40.0,
+                                        placeholder: (context, url) =>
+                                            const Icon(Icons.rotate_left),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error_outline),
                                       ),
                                     ),
                                     Text(
-                                      '28.5/25.9',
-                                      style: TextStyle(
+                                      data.dayAfterTempRange,
+                                      style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w400,
                                       ),
@@ -199,7 +236,7 @@ class MainPage extends StatelessWidget {
                   Center(child: Icon(Icons.error_outline)),
                 ],
               );
-            } else {
+            } else if (state is WeatherFetching) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -207,6 +244,8 @@ class MainPage extends StatelessWidget {
                   Center(child: CircularProgressIndicator()),
                 ],
               );
+            } else {
+              return const SizedBox();
             }
           },
         ),
@@ -214,7 +253,7 @@ class MainPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.search),
         onPressed: () {
-          //todo:
+          //todo: bottom search bar
         },
       ),
     );

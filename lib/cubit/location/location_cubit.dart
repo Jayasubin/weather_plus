@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:location/location.dart';
 import 'package:meta/meta.dart';
@@ -9,35 +11,49 @@ class LocationCubit extends Cubit<LocationState> {
   LocationCubit() : super(LocationInitial());
 
   Future<void> getLocation() async {
+    LocationData? _data;
+    DateTime? _updateTime;
+
     emit(LocationInitial());
 
     Location _location = LocationService().locationInstance;
 
     bool _serviceEnabled = await _location.serviceEnabled();
 
-    if (_serviceEnabled) {
-      PermissionStatus _permissionStatus = await _location.hasPermission();
+    if (_updateTime == null ||
+        _updateTime.difference(DateTime.now()).inMinutes >= 5) {
+      if (_serviceEnabled) {
+        PermissionStatus _permissionStatus = await _location.hasPermission();
 
-      if (_permissionStatus == PermissionStatus.granted) {
-        LocationData _locationData = await _location.getLocation();
+        if (_permissionStatus == PermissionStatus.granted) {
+          try {
+            _data = await _location.getLocation();
+            _updateTime = DateTime.now();
 
-        Future.delayed(const Duration(milliseconds: 800), () {
-          emit(LocationFetched(_locationData));
-        });
-      } else {
-        if(_permissionStatus==PermissionStatus.deniedForever){
-          emit (LocationPermissionDeniedForever());
+            emit(LocationFetched(_data));
+          } catch (e) {
+            emit(LocationError());
+
+            rethrow;
+          }
+        } else {
+          if (_permissionStatus == PermissionStatus.deniedForever) {
+            emit(LocationPermissionDeniedForever());
+          }
+          emit(LocationPermissionDenied());
+
+          await _location.requestPermission();
+          getLocation();
         }
-        emit(LocationPermissionDenied());
+      } else {
+        emit(LocationDisabled());
 
-        await _location.requestPermission();
+        await _location.requestService();
         getLocation();
       }
     } else {
-      emit(LocationDisabled());
-
-      await _location.requestService();
-      getLocation();
+      log('Previous Location valid');
+      emit(LocationFetched(_data!));
     }
   }
 }

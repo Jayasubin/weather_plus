@@ -12,22 +12,29 @@ class GPSIcon extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: BlocConsumer<LocationCubit, LocationState>(
         builder: (context, state) {
-          if (state is LocationInitial || state is LocationFetching) {
+          if (state is LocationFetched) {
+            return IconButton(
+              icon: const Icon(Icons.my_location),
+              onPressed: () {
+                context.read<LocationCubit>().getLocation();
+              },
+            );
+          } else if (state is LocationError) {
+            return const Icon(Icons.error_outline);
+          } else if (state is LocationInitial || state is LocationFetching) {
             return const CircularProgressIndicator(
               color: Colors.white,
             );
-          } else if (state is LocationFetched) {
-            return const Icon(Icons.my_location);
           } else {
-            return const Icon(Icons.error_outline);
+            return const SizedBox();
           }
         },
         listener: (context, state) {
           if (state is LocationFetched) {
-            BlocProvider.of<WeatherCubit>(context).getWeather(
-              state.locationData.latitude!,
-              state.locationData.longitude!,
-            );
+            context.read<WeatherCubit>().getWeatherByLocation(
+                  state.locationData.latitude!,
+                  state.locationData.longitude!,
+                );
           }
         },
       ),

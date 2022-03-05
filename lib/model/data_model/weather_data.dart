@@ -1,18 +1,16 @@
-import 'package:flutter/material.dart';
-
 class WeatherData {
   String cityName;
   String date;
   String time;
   double currentTemp;
-  IconData currentStatus;
+  String currentStatus;
   String currentDesc;
 
   String tomorrowTempRange;
-  IconData tomorrowStatus;
+  String tomorrowStatus;
 
   String dayAfterTempRange;
-  IconData dayAfterStatus;
+  String dayAfterStatus;
 
   WeatherData({
     required this.cityName,
