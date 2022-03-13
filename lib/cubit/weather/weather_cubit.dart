@@ -21,7 +21,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     if (data != null) {
       emit(WeatherFetched(data));
     } else {
-      emit(WeatherError());
+      emit(WeatherError('Something went Wrong'));
     }
   }
 }

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_plus/cubit/theme/theme_cubit.dart';
+import 'package:weather_plus/model/data_model/theme_model.dart';
+import 'package:weather_plus/util/constants.dart';
+import 'package:weather_plus/view/widget/color_picker.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -19,15 +24,22 @@ class MainDrawer extends StatelessWidget {
             child: Row(
               children: [
                 const Text('Dark theme'),
-                Switch(
-                  value: false,
-                  onChanged: (newBool) {
-                    //todo:
+                BlocBuilder<ThemeCubit, ThemeState>(
+                  builder: (context, state) {
+                    return Switch(
+                      value:
+                          state is ThemeCustomDark || state is ThemeDefaultDark,
+                      onChanged: (newBool) {
+                        context.read<ThemeCubit>().changeTheme(ThemeDataModel(
+                            type: newBool ? ThemeType.dark : ThemeType.light));
+                      },
+                    );
                   },
                 )
               ],
             ),
           ),
+          const ColorPicker(),
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 20.0,

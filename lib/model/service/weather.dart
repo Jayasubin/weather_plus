@@ -46,8 +46,8 @@ class Weather {
         var weatherResp = jsonDecode(weatherRes.body);
         var geocodeResp = jsonDecode(geocodeRes.body);
 
-        final DateTime time =
-            DateTime.fromMicrosecondsSinceEpoch(weatherResp['current']["dt"]);
+        final DateTime time = DateTime.fromMillisecondsSinceEpoch(
+            weatherResp['current']["dt"] * 1000);
 
         _weatherData = WeatherData(
           cityName: geocodeResp["results"][0]["locations"][0]["adminArea5"],
