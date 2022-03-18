@@ -5,7 +5,6 @@ import 'package:weather_plus/cubit/location/location_cubit.dart';
 import 'package:weather_plus/cubit/theme/theme_cubit.dart';
 import 'package:weather_plus/cubit/weather/weather_cubit.dart';
 import 'package:weather_plus/view/main_page.dart';
-import 'package:weather_plus/view/util/theme.dart';
 
 void main() {
   runApp(const WeatherPlus());
@@ -29,13 +28,7 @@ class WeatherPlus extends StatelessWidget {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Weather Plus',
-            theme: state is ThemeDefaultDark
-                ? defaultDark
-                : state is ThemeCustomLight
-                    ? customTheme(true, state.primaryColor)
-                    : state is ThemeCustomDark
-                        ? customTheme(false, state.primaryColor)
-                        : defaultLight,
+            theme: state.theme,
             home: const MainPage(),
           );
         },

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_plus/cubit/theme/theme_cubit.dart';
 import 'package:weather_plus/model/data_model/theme_model.dart';
-import 'package:weather_plus/util/constants.dart';
 
 class SingleColor extends StatelessWidget {
   const SingleColor({Key? key, required this.color}) : super(key: key);
@@ -11,22 +10,25 @@ class SingleColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isLight = Theme.of(context).brightness == Brightness.light;
+    final theme = Theme.of(context);
 
     return Container(
+      width: 50,
+      height: 50,
+      margin: const EdgeInsets.all(2.0),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3.0),
+        borderRadius: BorderRadius.circular(5.0),
         color: color,
         border: Border.all(
-          width: 2.0,
-          color: Colors.blueGrey,
+          width: 1.5,
+          color: Colors.grey,
         ),
       ),
       child: InkWell(
         onTap: () {
           context.read<ThemeCubit>().changeTheme(
-                ThemeDataModel(
-                  type: isLight ? ThemeType.customLight : ThemeType.customDark,
+                ThemeModel(
+                  brightness: theme.brightness,
                   color: color,
                 ),
               );

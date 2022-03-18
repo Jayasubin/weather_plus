@@ -7,10 +7,10 @@ class WeatherData {
   String currentDesc;
 
   String tomorrowTempRange;
-  String tomorrowStatus;
+  String tomorrowImage;
 
   String dayAfterTempRange;
-  String dayAfterStatus;
+  String dayAfterImage;
 
   WeatherData({
     required this.cityName,
@@ -20,8 +20,8 @@ class WeatherData {
     required this.currentStatus,
     required this.currentDesc,
     required this.tomorrowTempRange,
-    required this.tomorrowStatus,
+    required this.tomorrowImage,
     required this.dayAfterTempRange,
-    required this.dayAfterStatus,
+    required this.dayAfterImage,
   });
 }

@@ -7,28 +7,23 @@ class ColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 20.0),
-        height: 300,
-        width: 250,
-        child: GridView.count(
-          crossAxisCount: 3,
-          mainAxisSpacing: 2.0,
-          crossAxisSpacing: 2.0,
-          children: getChildren(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Color Scheme',
+          style: Theme.of(context).textTheme.labelMedium,
         ),
-      ),
+        const SizedBox(height: 10.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: List<Widget>.from(
+            colorSelection.map(
+              (color) => SingleColor(color: color),
+            ),
+          ),
+        ),
+      ],
     );
-  }
-
-  List<Widget> getChildren() {
-    List<Widget> children = [];
-
-    for (Color color in colorSelection) {
-      children.add(SingleColor(color: color));
-    }
-
-    return children;
   }
 }

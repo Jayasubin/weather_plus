@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:weather_plus/util/constants.dart';
+class ThemeModel {
+  Brightness brightness;
+  Color color;
 
-class ThemeDataModel {
-  ThemeType type;
-  Color? color;
-
-  ThemeDataModel({required this.type, this.color});
+  ThemeModel({
+    required this.brightness,
+    required this.color,
+  });
 }

@@ -59,13 +59,13 @@ class Weather {
               '@2x.png',
           currentDesc: weatherResp["current"]["weather"][0]["main"],
           tomorrowTempRange:
-              "${weatherResp["daily"][0]["temp"]["min"]}/${weatherResp["daily"][0]["temp"]["max"]}",
-          tomorrowStatus: _iconUrl +
+              "${weatherResp["daily"][0]["temp"]["min"].toStringAsFixed(1)}/${weatherResp["daily"][0]["temp"]["max"].toStringAsFixed(1)}",
+          tomorrowImage: _iconUrl +
               weatherResp["daily"][0]["weather"][0]["icon"].toString() +
               '@2x.png',
           dayAfterTempRange:
-              "${weatherResp["daily"][1]["temp"]["min"]}/${weatherResp["daily"][1]["temp"]["max"]}",
-          dayAfterStatus: _iconUrl +
+              "${weatherResp["daily"][1]["temp"]["min"].toStringAsFixed(1)}/${weatherResp["daily"][1]["temp"]["max"].toStringAsFixed(1)}",
+          dayAfterImage: _iconUrl +
               weatherResp["daily"][1]["weather"][0]["icon"].toString() +
               '@2x.png',
         );

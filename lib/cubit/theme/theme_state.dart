@@ -1,20 +1,16 @@
 part of 'theme_cubit.dart';
 
 @immutable
-abstract class ThemeState {}
+abstract class ThemeState {
+  final ThemeData theme;
 
-class ThemeDefaultLight extends ThemeState {}
-
-class ThemeDefaultDark extends ThemeState {}
-
-class ThemeCustomLight extends ThemeState {
-  final Color primaryColor;
-
-  ThemeCustomLight(this.primaryColor);
+  const ThemeState({required this.theme});
 }
 
-class ThemeCustomDark extends ThemeState {
-  final Color primaryColor;
+class ThemeDefault extends ThemeState {
+  const ThemeDefault({required ThemeData theme}) : super(theme: theme);
+}
 
-  ThemeCustomDark(this.primaryColor);
+class ThemeChange extends ThemeState {
+  const ThemeChange({required ThemeData theme}) : super(theme: theme);
 }

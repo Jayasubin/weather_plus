@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_plus/cubit/weather/weather_cubit.dart';
 import 'package:weather_plus/model/data_model/weather_data.dart';
+import 'package:weather_plus/view/widget/forecast_card.dart';
 import 'package:weather_plus/view/widget/gps_icon.dart';
 import 'package:weather_plus/view/widget/internet_icon.dart';
 import 'package:weather_plus/view/widget/main_drawer.dart';
@@ -13,10 +14,16 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFe1f5fe),
+      backgroundColor: theme.backgroundColor,
       appBar: AppBar(
-        title: const Text('Weather Plus'),
+        title: Text(
+          'Weather Plus',
+          style: textTheme.titleMedium,
+        ),
         actions: const [
           InternetIcon(),
           SizedBox(
@@ -41,35 +48,26 @@ class MainPage extends StatelessWidget {
                 children: [
                   Column(
                     children: [
-                      const SizedBox(height: 30.0),
+                      const SizedBox(height: 20.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             data.cityName,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: textTheme.bodyMedium,
                           ),
                           Column(
                             children: [
                               Text(
                                 data.date,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: textTheme.bodySmall,
                               ),
                               const SizedBox(
                                 height: 5.0,
                               ),
                               Text(
                                 data.time,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: textTheme.bodySmall,
                               ),
                             ],
                           )
@@ -81,11 +79,11 @@ class MainPage extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFb3e5fc),
+                          color: theme.highlightColor,
                           borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: const [
+                          boxShadow: [
                             BoxShadow(
-                              color: Color(0xFFbdbdbd),
+                              color: theme.shadowColor,
                               offset: Offset(3, 5),
                               blurRadius: 3.0,
                             )
@@ -102,11 +100,8 @@ class MainPage extends StatelessWidget {
                                   const Icon(Icons.error_outline),
                             ),
                             Text(
-                              '${data.currentTemp}\u00b0C ',
-                              style: const TextStyle(
-                                fontSize: 60,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              '${data.currentTemp.toStringAsFixed(1)}\u00b0C ',
+                              style: textTheme.bodyLarge,
                             ),
                           ],
                         ),
@@ -120,106 +115,18 @@ class MainPage extends StatelessWidget {
                       const SizedBox(
                         height: 10.0,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(6.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Tomorrow',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      child: CachedNetworkImage(
-                                        imageUrl: data.tomorrowStatus,
-                                        height: 40.0,
-                                        width: 40.0,
-                                        placeholder: (context, url) =>
-                                            const Icon(Icons.rotate_left),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error_outline),
-                                      ),
-                                    ),
-                                    Text(
-                                      data.tomorrowTempRange,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      ForecastCard(
+                        day: 'Tomorrow',
+                        temp: data.tomorrowTempRange,
+                        img: data.tomorrowImage,
                       ),
                       const SizedBox(
                         height: 10.0,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5.0,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.lightBlueAccent,
-                              borderRadius: BorderRadius.circular(6.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'The day after',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      child: CachedNetworkImage(
-                                        imageUrl: data.dayAfterStatus,
-                                        height: 40.0,
-                                        width: 40.0,
-                                        placeholder: (context, url) =>
-                                            const Icon(Icons.rotate_left),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error_outline),
-                                      ),
-                                    ),
-                                    Text(
-                                      data.dayAfterTempRange,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      ForecastCard(
+                        day: 'The day after',
+                        temp: data.dayAfterTempRange,
+                        img: data.dayAfterImage,
                       ),
                       const SizedBox(
                         height: 80.0,
