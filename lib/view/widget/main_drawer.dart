@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:weather_plus/view/widget/celcius_switch.dart';
 import 'package:weather_plus/view/widget/color_picker.dart';
 import 'package:weather_plus/view/widget/dark_switch.dart';
+import 'package:weather_plus/view/widget/unit_switch.dart';
 
 class MainDrawer extends StatelessWidget {
   const MainDrawer({Key? key}) : super(key: key);
@@ -33,7 +33,7 @@ class MainDrawer extends StatelessWidget {
                 SizedBox(height: 25.0),
                 ColorPicker(),
                 SizedBox(height: 25.0),
-                CelsiusSwitch(),
+                UnitSwitch(),
               ],
             ),
           ),

@@ -36,4 +36,18 @@ class StorageService {
       color: Color.fromRGBO(red, green, blue, 1.0),
     );
   }
+
+  Future<void> writeUnit(bool isFahrenheit) async {
+    final spInstance = await SharedPreferences.getInstance();
+
+    spInstance.setBool('isFahrenheit', isFahrenheit);
+  }
+
+  Future<bool> readUnit() async {
+    final spInstance = await SharedPreferences.getInstance();
+
+    bool isFahrenheit = spInstance.getBool('isFahrenheit') ?? false;
+
+    return isFahrenheit;
+  }
 }

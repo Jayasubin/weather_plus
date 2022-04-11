@@ -1,9 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:weather_plus/model/data_model/temperature.dart';
 import 'package:weather_plus/model/data_model/weather_data.dart';
 import 'package:weather_plus/util/secrets.dart';
-import 'package:weather_plus/view/util/date_formatter.dart';
 
 class Weather {
   static final Weather _weather = Weather._internal();
@@ -90,6 +91,7 @@ class Weather {
 
         return _weatherData!;
       } catch (e) {
+        //rethrow;
         return null;
       }
     }
@@ -101,25 +103,28 @@ class Weather {
     var weatherResp = jsonDecode(weatherRes.body);
     var revGeocodeResp = jsonDecode(geocodeRes.body);
 
-    final DateTime time = DateTime.fromMillisecondsSinceEpoch(
+    final DateTime raw = DateTime.fromMillisecondsSinceEpoch(
         weatherResp['current']["dt"] * 1000);
+
+    final date = DateFormat('dd MMM, yyyy').format(raw);
+    final time = DateFormat('hh:mm aaa').format(raw);
 
     return WeatherData(
       cityName: revGeocodeResp["results"][0]["locations"][0]["adminArea5"],
-      date: toLocalDate(time),
-      time: toLocalTime(time),
-      currentTemp: weatherResp["current"]["temp"],
+      date: date,
+      time: time,
+      currentTemp: Temperature(weatherResp["current"]["temp"]),
       currentStatus: _iconUrl +
           weatherResp["current"]["weather"][0]["icon"].toString() +
           '@2x.png',
       currentDesc: weatherResp["current"]["weather"][0]["main"],
-      tomorrowTempRange:
-          "${weatherResp["daily"][0]["temp"]["min"].toStringAsFixed(1)}/${weatherResp["daily"][0]["temp"]["max"].toStringAsFixed(1)}",
+      tomorrowMin: Temperature(weatherResp["daily"][0]["temp"]["min"]),
+      tomorrowMax: Temperature(weatherResp["daily"][0]["temp"]["max"]),
       tomorrowImage: _iconUrl +
           weatherResp["daily"][0]["weather"][0]["icon"].toString() +
           '@2x.png',
-      dayAfterTempRange:
-          "${weatherResp["daily"][1]["temp"]["min"].toStringAsFixed(1)}/${weatherResp["daily"][1]["temp"]["max"].toStringAsFixed(1)}",
+      dayAfterMin: Temperature(weatherResp["daily"][1]["temp"]["min"]),
+      dayAfterMax: Temperature(weatherResp["daily"][1]["temp"]["max"]),
       dayAfterImage: _iconUrl +
           weatherResp["daily"][1]["weather"][0]["icon"].toString() +
           '@2x.png',
