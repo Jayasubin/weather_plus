@@ -1,15 +1,20 @@
+import 'package:weather_plus/model/data_model/temperature.dart';
+
 class WeatherData {
   String cityName;
   String date;
   String time;
-  double currentTemp;
+
+  Temperature currentTemp;
   String currentStatus;
   String currentDesc;
 
-  String tomorrowTempRange;
+  Temperature tomorrowMin;
+  Temperature tomorrowMax;
   String tomorrowImage;
 
-  String dayAfterTempRange;
+  Temperature dayAfterMin;
+  Temperature dayAfterMax;
   String dayAfterImage;
 
   WeatherData({
@@ -19,9 +24,11 @@ class WeatherData {
     required this.currentTemp,
     required this.currentStatus,
     required this.currentDesc,
-    required this.tomorrowTempRange,
+    required this.tomorrowMin,
+    required this.tomorrowMax,
     required this.tomorrowImage,
-    required this.dayAfterTempRange,
+    required this.dayAfterMin,
+    required this.dayAfterMax,
     required this.dayAfterImage,
   });
 }

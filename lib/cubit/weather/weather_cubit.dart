@@ -8,10 +8,15 @@ part 'weather_state.dart';
 class WeatherCubit extends Cubit<WeatherState> {
   WeatherCubit() : super(WeatherInitial());
 
-  void getWeatherByCity(String cityName) {
+  Future<void> getWeatherByCity(String cityName) async {
     emit(WeatherFetching());
-    //todo:
-    //emit (WeatherFetched());
+    final WeatherData? data = await Weather().getWeatherByCity(cityName);
+
+    if (data != null) {
+      emit(WeatherFetched(data));
+    } else {
+      emit(WeatherError('Something went Wrong'));
+    }
   }
 
   Future<void> getWeatherByLocation(double lat, double lon) async {

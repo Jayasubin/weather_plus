@@ -15,6 +15,7 @@ class GPSIcon extends StatelessWidget {
           if (state is LocationFetched) {
             return IconButton(
               icon: const Icon(Icons.my_location),
+              splashRadius: 20.0,
               onPressed: () {
                 context.read<LocationCubit>().getLocation();
               },

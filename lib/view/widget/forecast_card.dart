@@ -1,16 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_plus/cubit/unit/unit_cubit.dart';
+import 'package:weather_plus/model/data_model/temperature.dart';
 
 class ForecastCard extends StatelessWidget {
   const ForecastCard({
     Key? key,
     required this.day,
-    required this.temp,
+    required this.min,
+    required this.max,
     required this.img,
   }) : super(key: key);
 
   final String day;
-  final String temp;
+  final Temperature min;
+  final Temperature max;
   final String img;
 
   @override
@@ -48,9 +53,13 @@ class ForecastCard extends StatelessWidget {
                           const Icon(Icons.error_outline),
                     ),
                   ),
-                  Text(
-                    temp,
-                    style: textTheme.labelLarge,
+                  BlocBuilder<UnitCubit, UnitState>(
+                    builder: (context, state) {
+                      return Text(
+                        '${min.getStr(state.isFahrenheit)}/${max.getStr(state.isFahrenheit)}',
+                        style: textTheme.labelLarge,
+                      );
+                    },
                   ),
                 ],
               ),
